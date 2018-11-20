@@ -1,6 +1,7 @@
 package com.steuraa.inittrackerjava.core.use_cases.progresEncounter;
 
 import com.steuraa.inittrackerjava.core.entities.Encounter;
+import com.steuraa.inittrackerjava.core.entities.ProgressEncounter;
 import com.steuraa.inittrackerjava.core.exception.NotFoundException;
 import com.steuraa.inittrackerjava.core.gateways.Gateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,34 +12,35 @@ import java.util.List;
 @Service
 public class ProgressEncounterServiceImpl implements ProgressEncounterService {
 	
-	public final Gateway<Encounter> encounterGateway;
+	private final Gateway<ProgressEncounter> progressEncounterGateway;
 	
 	@Autowired
-	public ProgressEncounterServiceImpl(Gateway<Encounter> encounterGateway) {
-		this.encounterGateway = encounterGateway;
+	public ProgressEncounterServiceImpl(Gateway<ProgressEncounter> progressEncounterGateway) {
+		this.progressEncounterGateway = progressEncounterGateway;
 	}
 	
 	@Override
-	public List<Encounter> getAll() {return this.encounterGateway.findAll();}
+	public List<ProgressEncounter> getAll() {return this.progressEncounterGateway.findAll();}
 	
 	@Override
-	public Encounter getById(Long id) {
-		return this.encounterGateway.findById(id).orElseThrow(() -> new NotFoundException("No encounter with id: " + id));
+	public ProgressEncounter getById(Long id) {
+		return this.progressEncounterGateway.findById(id).orElseThrow(() -> new NotFoundException("No progress-encounter with id: " + id));
 	}
 	
 	@Override
-	public Encounter create(Encounter encounter) {
-		return new Encounter();
+	public ProgressEncounter create(ProgressEncounter encounter) {
+		ProgressEncounter temp = new ProgressEncounter();
+		return new ProgressEncounter();
 	}
 	
 	@Override
-	public Encounter update(Long id, Encounter encounter) {
-		return new Encounter();
+	public ProgressEncounter update(Long id, ProgressEncounter encounter) {
+		return new ProgressEncounter();
 	}
 	
 	@Override
 	public void delete(Long id) {
 		this.getById(id);
-		this.encounterGateway.deleteById(id);
+		this.progressEncounterGateway.deleteById(id);
 	}
 }

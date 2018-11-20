@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class EncounterServiceImpl implements EncounterService {
 	
-	public final Gateway<Encounter> encounterGateway;
+	private final Gateway<Encounter> encounterGateway;
 	
 	@Autowired
 	public EncounterServiceImpl(Gateway<Encounter> encounterGateway) {
@@ -28,7 +28,11 @@ public class EncounterServiceImpl implements EncounterService {
 	
 	@Override
 	public Encounter create(Encounter encounter) {
-		return new Encounter();
+		Encounter temp = new Encounter();
+//		if (encounter.getHeroes() != null) {encounter.getHeroes().forEach(hero ->
+//
+//		}
+		return this.encounterGateway.save(encounter);
 	}
 	
 	@Override

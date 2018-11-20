@@ -1,13 +1,12 @@
 package com.steuraa.inittrackerjava.entrypoints.rest;
 
-import com.steuraa.inittrackerjava.core.entities.Monster;
+import com.steuraa.inittrackerjava.core.entities.ProgressEncounter;
 import com.steuraa.inittrackerjava.core.exception.NotFoundException;
-import com.steuraa.inittrackerjava.core.use_cases.monster.MonsterService;
+import com.steuraa.inittrackerjava.core.use_cases.progresEncounter.ProgressEncounterService;
 import com.steuraa.inittrackerjava.entrypoints.error_entities.ErrorResponse;
 import com.steuraa.inittrackerjava.entrypoints.error_entities.RequestBodyError;
 import com.steuraa.inittrackerjava.entrypoints.error_entities.RequestBodyErrors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -17,34 +16,34 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/monsters")
-public class MonsterController {
-    private final MonsterService monsterService;
+@RequestMapping("/api/encounters")
+public class ProgressEncounterController {
+    private final ProgressEncounterService progressEncounterService;
 
     @Autowired
 
-    public MonsterController(MonsterService monsterService) {
-        this.monsterService = monsterService;
+    public ProgressEncounterController(ProgressEncounterService progressEncounterService) {
+        this.progressEncounterService = progressEncounterService;
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity getAllMonsters() {
-        return ResponseEntity.status(HttpStatus.OK).body(monsterService.getAll());
+    public ResponseEntity getAllEncounters() {
+        return ResponseEntity.status(HttpStatus.OK).body(progressEncounterService.getAll());
     }
 
     @GetMapping(produces = "application/json", value = "/{id}")
-    public ResponseEntity getMonsterById(@PathVariable("id") Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(monsterService.getById(id));
+    public ResponseEntity getEncounterById(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(progressEncounterService.getById(id));
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity createMonster(@Valid @RequestBody Monster monster, Errors errors) {
+    public ResponseEntity createEncounter(@Valid @RequestBody ProgressEncounter progressEncounter, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestBodyErrors(errors));
         }
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(
-                    this.monsterService.create(monster));
+                    this.progressEncounterService.create(progressEncounter));
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
         } catch (Exception e) {
@@ -53,18 +52,18 @@ public class MonsterController {
     }
 
     @PostMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity updateMonster(@PathVariable Long id, @Valid @RequestBody Monster monster, Errors errors) {
+    public ResponseEntity updateEncounter(@PathVariable Long id, @Valid @RequestBody ProgressEncounter progressEncounter, Errors errors) {
         if (errors.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestBodyErrors(errors));
-        if (!id.equals(monster.getId()))
+        if (!id.equals(progressEncounter.getId()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestBodyErrors(new RequestBodyError("id",
                     "id in url path and id of object do not match")));
-        return ResponseEntity.status(HttpStatus.OK).body(monsterService.update(monster.getId(), monster));
+        return ResponseEntity.status(HttpStatus.OK).body(progressEncounterService.update(progressEncounter.getId(), progressEncounter));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteMonster(@PathVariable("id") Long id) {
-        monsterService.delete(id);
+    public ResponseEntity deleteEncounter(@PathVariable("id") Long id) {
+        progressEncounterService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
 }
