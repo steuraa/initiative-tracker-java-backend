@@ -2,12 +2,11 @@ package com.steuraa.inittrackerjava.core.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="encounterHeroes")
+@Table(name="ProgressencounterHeroes")
 public class EncounterHero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +28,9 @@ public class EncounterHero {
     private Integer init_mod;
     @NotNull
     private Integer initiative;
-
-    @ManyToMany(mappedBy = "encounterHeroes")
-    private Set<EncounterSchema> encounters;
+	@ManyToOne
+	@JoinColumn(name = "progressEncounterId", referencedColumnName = "id", nullable = false)
+	private ProgressEncounter progressEncounter;
 
     public Long getId() {
         return id;
@@ -104,14 +103,14 @@ public class EncounterHero {
     public void setInitiative(Integer initiative) {
         this.initiative = initiative;
     }
-
-    public Set<EncounterSchema> getEncounters() {
-        return encounters;
-    }
-
-    public void setEncounters(Set<EncounterSchema> encounters) {
-        this.encounters = encounters;
-    }
+	
+	public ProgressEncounter getProgressEncounter() {
+		return progressEncounter;
+	}
+	
+	public void setProgressEncounter(ProgressEncounter progressEncounter) {
+		this.progressEncounter = progressEncounter;
+	}
 
     @Override
     public boolean equals(Object o) {

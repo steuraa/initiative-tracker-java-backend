@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="encounterMonsters")
+@Table(name="ProgressencounterMonsters")
 public class EncounterMonster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +30,9 @@ public class EncounterMonster {
     private Integer initiative;
     @NotNull
     private boolean disabled;
-
-    @ManyToMany(mappedBy = "encounterHeroes")
-    private Set<EncounterSchema> encounters;
+    @ManyToOne
+    @JoinColumn(name = "progressEncounterId", referencedColumnName = "id", nullable = false)
+    private ProgressEncounter progressEncounter;
 
     public Long getId() {
         return id;
@@ -114,12 +114,12 @@ public class EncounterMonster {
         this.initiative = initiative;
     }
 
-    public Set<EncounterSchema> getEncounters() {
-        return encounters;
+    public ProgressEncounter getProgressEncounter() {
+        return progressEncounter;
     }
 
-    public void setEncounters(Set<EncounterSchema> encounters) {
-        this.encounters = encounters;
+    public void setProgressEncounter(ProgressEncounter progressEncounter) {
+        this.progressEncounter = progressEncounter;
     }
 
     @Override
